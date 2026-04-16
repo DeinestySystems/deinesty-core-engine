@@ -1,14 +1,15 @@
 /**
  * DEINESTY CORE ENGINE - LOGIC UNIT
- * This function now calculates based on Margin % rather than flat $
+ * Updated for Margin-based Analysis
  */
-function getKpiStatus(netProfit, grossSales) {
-  if (!grossSales || grossSales <= 0) return "😶";
+function getKpiStatus(net, gross) {
+  if (!gross || gross <= 0) return "😶";
   
-  const margin = netProfit / grossSales;
+  const margin = net / gross;
 
-  if (margin >= 0.30) return "🚀"; // 30%+ Margin
-  if (margin >= 0.15) return "🔥"; // 15-30% Margin
-  if (margin >= 0.05) return "✅"; // 5-15% Margin
-  return "⚠️"; // Below 5% Margin
+  if (margin >= 0.40) return "🚀"; // Elite (40%+)
+  if (margin >= 0.20) return "🔥"; // Good (20-40%)
+  if (margin >= 0.05) return "✅"; // Average (5-20%)
+  if (margin > 0) return "⚠️";     // Thin (0-5%)
+  return "💀";                    // Loss
 }
