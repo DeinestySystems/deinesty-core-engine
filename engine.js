@@ -1,50 +1,14 @@
 /**
- * DEINESTY CORE ENGINE - Logic Module
- * Version: 1.5.0
- * This file lives in GitHub and controls the "Brain" of your sheets.
+ * DEINESTY CORE ENGINE - LOGIC UNIT
+ * This function now calculates based on Margin % rather than flat $
  */
+function getKpiStatus(netProfit, grossSales) {
+  if (!grossSales || grossSales <= 0) return "😶";
+  
+  const margin = netProfit / grossSales;
 
-/**
- * Primary function to determine the status of a KPI row.
- * @param {number} profit - The net profit value from the sheet.
- * @return {string} - The emoji status indicator.
- */
-function getKpiStatus(profit) {
-  
-  // 1. Safety Check: Handle empty cells or text errors
-  if (profit === "" || profit === null || isNaN(profit)) {
-    return "";
-  }
-  
-  // 2. Performance Logic
-  // This is the "Secret Sauce" you can update remotely.
-  
-  // ELITE PERFORMANCE (Over $50)
-  if (profit > 50) {
-    return "🚀"; 
-  } 
-  
-  // STEADY GROWTH (Between $20 and $50)
-  else if (profit >= 20) {
-    return "🔥";
-  }
-  
-  // BREAK EVEN / MINIMUM (Between $0 and $19.99)
-  else if (profit >= 0) {
-    return "✅";
-  }
-  
-  // LOSS / CRITICAL (Below $0)
-  else {
-    return "⚠️";
-  }
-}
-
-/**
- * Future-Proofing: You can add more modular functions below 
- * and they will automatically be available to your Google Sheet.
- */
-function calculateMargin(profit, gross) {
-  if (gross <= 0) return 0;
-  return (profit / gross);
+  if (margin >= 0.30) return "🚀"; // 30%+ Margin
+  if (margin >= 0.15) return "🔥"; // 15-30% Margin
+  if (margin >= 0.05) return "✅"; // 5-15% Margin
+  return "⚠️"; // Below 5% Margin
 }
