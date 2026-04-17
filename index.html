@@ -20,13 +20,13 @@
             color: #FFBF00; 
             font-size: 32px; 
             font-weight: bold; 
-            margin-bottom: 10px; 
+            margin-bottom: 5px; 
             text-transform: uppercase;
             letter-spacing: 1px;
         }
         .company-name { 
             color: #FFFFFF; 
-            font-size: 18px; 
+            font-size: 24px; 
             font-weight: 700;
             margin-bottom: 5px; 
             letter-spacing: 2px;
@@ -34,26 +34,26 @@
         }
         .version-tag {
             color: #FFBF00;
-            font-size: 14px; 
+            font-size: 16px; 
             margin-bottom: 40px;
             letter-spacing: 1px;
         }
         
-        /* THE COCKPIT SYMMETRY */
+        /* THE COCKPIT SYMMETRY (4 CARDS) */
         .cockpit {
             display: flex;
             gap: 20px;
             width: 100%;
-            max-width: 1200px; 
+            max-width: 1100px; 
             justify-content: center;
             flex-wrap: wrap;
         }
         .card {
             background: #111;
             border: 1px solid #333;
-            padding: 20px;
+            padding: 25px;
             flex: 1;
-            min-width: 180px;
+            min-width: 200px;
             text-align: center;
             border-radius: 4px;
         }
@@ -61,10 +61,9 @@
         .card.target { border: 2px solid #FFBF00; background: #443a00; } 
         
         .label { font-size: 14px; margin-bottom: 15px; display: block; font-weight: bold; }
-        .value { font-size: 32px; font-weight: bold; }
+        .value { font-size: 36px; font-weight: bold; }
         .amber { color: #FFBF00; }
         .green { color: #00FF00; }
-        .gray { color: #A0A0A0; }
     </style>
 </head>
 <body>
@@ -90,14 +89,10 @@
             <span class="label">TARGET PROFIT</span>
             <span id="target-val" class="value">$0.00</span>
         </div>
-        <div class="card">
-            <span class="label gray">MARGIN %</span>
-            <span id="margin-val" class="value gray">0%</span>
-        </div>
     </div>
 
-    <div id="rocket" style="font-size: 80px; margin-top: 40px; transition: 0.3s;">🚀</div>
-    <div id="status-text" style="margin-top: 10px; font-weight: bold; color: #555;">SYSTEMS NOMINAL</div>
+    <div id="rocket" style="font-size: 80px; margin-top: 50px; transition: 0.3s;">🚀</div>
+    <div id="status-text" style="margin-top: 15px; font-weight: bold; color: #555; letter-spacing: 1px;">WAITING FOR DATA</div>
 
     <script src="engine.js"></script>
 
