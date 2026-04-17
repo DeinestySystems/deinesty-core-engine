@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEINESTY | KPI SaaS v1.5</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -12,67 +13,89 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 50px;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
         }
         
         /* HEADER STYLING */
+        .header-container { text-align: center; margin-top: 30px; margin-bottom: 40px; }
         .brand { 
             color: #FFBF00; 
-            font-size: 32px; 
+            font-size: clamp(24px, 5vw, 32px); 
             font-weight: bold; 
-            margin-bottom: 5px; 
             text-transform: uppercase;
             letter-spacing: 1px;
         }
         .company-name { 
             color: #FFFFFF; 
-            font-size: 24px; 
+            font-size: 18px; 
             font-weight: 700;
-            margin-bottom: 5px; 
             letter-spacing: 2px;
             text-transform: uppercase;
+            opacity: 0.8;
         }
         .version-tag {
             color: #FFBF00;
-            font-size: 16px; 
-            margin-bottom: 40px;
+            font-size: 12px; 
+            margin-top: 10px;
             letter-spacing: 1px;
         }
-        
+
         /* THE COCKPIT SYMMETRY (4 CARDS) */
         .cockpit {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
             width: 100%;
             max-width: 1100px; 
-            justify-content: center;
-            flex-wrap: wrap;
         }
         .card {
             background: #111;
             border: 1px solid #333;
             padding: 25px;
-            flex: 1;
-            min-width: 200px;
             text-align: center;
-            border-radius: 4px;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
         }
-        .card.profit { border: 2px solid #00FF00; box-shadow: 0 0 10px rgba(0,255,0,0.1); }
-        .card.target { border: 2px solid #FFBF00; background: #443a00; } 
+        .card:hover { transform: translateY(-5px); }
+        .card.profit { border: 2px solid #00FF00; box-shadow: 0 0 15px rgba(0,255,0,0.1); }
+        .card.target { border: 2px solid #FFBF00; background: #1a1700; } 
         
-        .label { font-size: 14px; margin-bottom: 15px; display: block; font-weight: bold; }
-        .value { font-size: 36px; font-weight: bold; }
+        .label { font-size: 12px; margin-bottom: 15px; display: block; font-weight: bold; letter-spacing: 1px; color: #888; }
+        .value { font-size: 32px; font-weight: bold; display: block; }
         .amber { color: #FFBF00; }
         .green { color: #00FF00; }
+
+        /* STATUS DISPLAY */
+        .status-container {
+            margin-top: 60px;
+            text-align: center;
+        }
+        #rocket { 
+            font-size: 80px; 
+            margin-bottom: 20px;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-block;
+        }
+        #status-text { 
+            font-weight: bold; 
+            color: #555; 
+            letter-spacing: 2px;
+            font-size: 20px;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
 
-    <div class="brand">The Core | KPI Command Center</div>
-    <div class="company-name">BY DEINESTY SYSTEMS</div>
-    <div class="version-tag">SAAS INTERFACE V1.5</div>
+    <div class="header-container">
+        <div class="brand">The Core | KPI Command Center</div>
+        <div class="company-name">BY DEINESTY SYSTEMS</div>
+        <div class="version-tag">PREMIUM SaaS INTERFACE V1.5</div>
+    </div>
 
-    <div class="cockpit">
+    <div class="cockpit" id="dashboard">
         <div class="card">
             <span class="label">TOTAL SALES</span>
             <span id="sales-val" class="value amber">$0.00</span>
@@ -91,10 +114,69 @@
         </div>
     </div>
 
-    <div id="rocket" style="font-size: 80px; margin-top: 50px; transition: 0.3s;">🚀</div>
-    <div id="status-text" style="margin-top: 15px; font-weight: bold; color: #555; letter-spacing: 1px;">WAITING FOR DATA</div>
+    <div class="status-container">
+        <div id="rocket">📡</div>
+        <div id="status-text">CONNECTING TO INTERACTIVE...</div>
+    </div>
 
-    <script src="engine.js"></script>
+    <script>
+        // LIVE LINK TO INTERACTIVE PRODUCT
+        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwmw09Fk6GHJNm3QttrKJ_6tX1jkF3UMPr9Nr_Ac7TdeXqJCIboGnR9MhxQxujxW8rLFA/exec";
 
+        async function fetchKPIs() {
+            try {
+                const response = await fetch(SHEET_API_URL);
+                const data = await response.json();
+                updateUI(data);
+            } catch (error) {
+                console.error("Sync Error:", error);
+                document.getElementById('status-text').innerText = "OFFLINE: CHECK API";
+            }
+        }
+
+        function updateUI(data) {
+            const sales = data.totalSales || 0;
+            const ads = data.adBurn || 0;
+            const net = data.netProfit || 0;
+            const target = data.targetProfit || 0;
+            const margin = sales > 0 ? (net / sales) * 100 : 0;
+
+            document.getElementById('sales-val').innerText = formatCurrency(sales);
+            document.getElementById('ads-val').innerText = formatCurrency(ads);
+            document.getElementById('profit-val').innerText = formatCurrency(net);
+            document.getElementById('target-val').innerText = formatCurrency(target);
+
+            const statusText = document.getElementById('status-text');
+            const rocket = document.getElementById('rocket');
+
+            if (sales === 0 && net === 0) {
+                statusText.innerText = "WAITING FOR DATA";
+                rocket.innerText = "📡";
+            } else if (margin >= 30) {
+                statusText.innerText = "🚀 ELITE PERFORMANCE";
+                statusText.style.color = "#00FF00";
+                rocket.innerText = "🚀";
+                rocket.style.transform = "translateY(-20px) scale(1.2)";
+            } else if (net > 0) {
+                statusText.innerText = "✅ SYSTEMS NOMINAL";
+                statusText.style.color = "#FFFFFF";
+                rocket.innerText = "✅";
+                rocket.style.transform = "scale(1)";
+            } else {
+                statusText.innerText = "🛑 CRITICAL: UNDERPERFORMING";
+                statusText.style.color = "#FF0000";
+                rocket.innerText = "⚠️";
+                rocket.style.transform = "rotate(15deg)";
+            }
+        }
+
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
+        }
+
+        // Initial fetch and auto-refresh every 30 seconds
+        fetchKPIs();
+        setInterval(fetchKPIs, 30000);
+    </script>
 </body>
 </html>
