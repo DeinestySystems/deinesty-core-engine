@@ -18,7 +18,6 @@
             min-height: 100vh;
         }
         
-        /* HEADER STYLING */
         .header-container { text-align: center; margin-top: 30px; margin-bottom: 40px; }
         .brand { 
             color: #FFBF00; 
@@ -42,7 +41,6 @@
             letter-spacing: 1px;
         }
 
-        /* THE COCKPIT SYMMETRY (4 CARDS) */
         .cockpit {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -67,7 +65,6 @@
         .amber { color: #FFBF00; }
         .green { color: #00FF00; }
 
-        /* STATUS DISPLAY */
         .status-container {
             margin-top: 60px;
             text-align: center;
@@ -120,25 +117,32 @@
     </div>
 
     <script>
-        // LIVE LINK TO INTERACTIVE PRODUCT
-        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwmw09Fk6GHJNm3QttrKJ_6tX1jkF3UMPr9Nr_Ac7TdeXqJCIboGnR9MhxQxujxW8rLFA/exec";
+        // 1. YOUR API URL (CONNECTED TO YOUR SHEET)
+        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzUI1YIKP4XYcPgw6gbf3_3IlracP84wBPquW4mlOVoE-8yX7hIXVZeSGu0pkwxQmCGRA/exec";
 
         async function fetchKPIs() {
             try {
-                const response = await fetch(SHEET_API_URL);
+                const response = await fetch(SHEET_API_URL, {
+                    method: 'GET',
+                    redirect: 'follow'
+                });
+                
+                if (!response.ok) throw new Error('Network response was not ok');
+                
                 const data = await response.json();
                 updateUI(data);
             } catch (error) {
                 console.error("Sync Error:", error);
                 document.getElementById('status-text').innerText = "OFFLINE: CHECK API";
+                document.getElementById('status-text').style.color = "#FF0000";
             }
         }
 
         function updateUI(data) {
-            const sales = data.totalSales || 0;
-            const ads = data.adBurn || 0;
-            const net = data.netProfit || 0;
-            const target = data.targetProfit || 0;
+            const sales = parseFloat(data.totalSales) || 0;
+            const ads = parseFloat(data.adBurn) || 0;
+            const net = parseFloat(data.netProfit) || 0;
+            const target = parseFloat(data.targetProfit) || 0;
             const margin = sales > 0 ? (net / sales) * 100 : 0;
 
             document.getElementById('sales-val').innerText = formatCurrency(sales);
@@ -151,6 +155,7 @@
 
             if (sales === 0 && net === 0) {
                 statusText.innerText = "WAITING FOR DATA";
+                statusText.style.color = "#555";
                 rocket.innerText = "📡";
             } else if (margin >= 30) {
                 statusText.innerText = "🚀 ELITE PERFORMANCE";
@@ -174,8 +179,10 @@
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
         }
 
-        // Initial fetch and auto-refresh every 30 seconds
+        // Run immediately
         fetchKPIs();
+        
+        // Auto-refresh every 30 seconds
         setInterval(fetchKPIs, 30000);
     </script>
 </body>
