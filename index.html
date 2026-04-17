@@ -9,53 +9,58 @@
         body { background-color: #000000; color: #FFFFFF; font-family: 'Lexend', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; margin: 0; min-height: 100vh; }
         .header-container { text-align: center; margin-top: 30px; margin-bottom: 40px; }
         .brand { color: #FFBF00; font-size: clamp(24px, 5vw, 32px); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-        .company-name { color: #FFFFFF; font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; }
-        .version-tag { color: #FFBF00; font-size: 12px; margin-top: 10px; letter-spacing: 1px; }
         .cockpit { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; width: 100%; max-width: 1100px; }
-        .card { background: #111; border: 1px solid #333; padding: 25px; text-align: center; border-radius: 8px; transition: transform 0.3s ease; }
+        .card { background: #111; border: 1px solid #333; padding: 25px; text-align: center; border-radius: 8px; }
         .card.profit { border: 2px solid #00FF00; box-shadow: 0 0 15px rgba(0,255,0,0.1); }
         .card.target { border: 2px solid #FFBF00; background: #1a1700; } 
-        .label { font-size: 12px; margin-bottom: 15px; display: block; font-weight: bold; letter-spacing: 1px; color: #888; }
-        .value { font-size: 32px; font-weight: bold; display: block; }
+        .label { font-size: 12px; margin-bottom: 15px; display: block; font-weight: bold; color: #888; }
+        .value { font-size: 32px; font-weight: bold; }
         .amber { color: #FFBF00; }
         .green { color: #00FF00; }
         .status-container { margin-top: 60px; text-align: center; }
-        #rocket { font-size: 80px; margin-bottom: 20px; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-block; }
-        #status-text { font-weight: bold; color: #555; letter-spacing: 2px; font-size: 20px; text-transform: uppercase; }
+        #rocket { font-size: 80px; margin-bottom: 20px; display: inline-block; }
+        #status-text { font-weight: bold; color: #FFBF00; letter-spacing: 2px; font-size: 20px; }
+        .sync-btn { margin-top: 20px; background: none; border: 1px solid #444; color: #444; cursor: pointer; padding: 8px 15px; border-radius: 4px; font-family: 'Lexend'; transition: 0.3s; }
+        .sync-btn:hover { border-color: #FFBF00; color: #FFBF00; }
     </style>
 </head>
 <body>
 
     <div class="header-container">
         <div class="brand">The Core | KPI Command Center</div>
-        <div class="company-name">BY DEINESTY SYSTEMS</div>
-        <div class="version-tag">PREMIUM SaaS INTERFACE V1.5</div>
+        <div style="font-size:12px; color:#555; margin-top:5px; letter-spacing:2px;">DEINESTY SYSTEMS // PREMIUM SaaS</div>
     </div>
 
     <div class="cockpit">
         <div class="card"><span class="label">TOTAL SALES</span><span id="sales-val" class="value amber">$0.00</span></div>
         <div class="card"><span class="label">AD BURN</span><span id="ads-val" class="value">$0.00</span></div>
-        <div class="card profit"><span class="label" style="color: #00FF00;">TRUE NET PROFIT</span><span id="profit-val" class="value green">$0.00</span></div>
+        <div class="card profit"><span class="label" style="color:#00FF00;">TRUE NET PROFIT</span><span id="profit-val" class="value green">$0.00</span></div>
         <div class="card target"><span class="label">TARGET PROFIT</span><span id="target-val" class="value">$0.00</span></div>
     </div>
 
     <div class="status-container">
         <div id="rocket">📡</div>
-        <div id="status-text">SYNCING DATA...</div>
+        <div id="status-text">INITIALIZING SYNC...</div>
+        <br>
+        <button class="sync-btn" onclick="fetchKPIs()">FORCE RE-SYNC</button>
     </div>
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbwmw09Fk6GHJNm3QttrKJ_6tX1jkF3UMPr9Nr_Ac7TdeXqJCIboGnR9MhxQxujxW8rLFA/exec";
 
         function fetchKPIs() {
-            // High-end JSONP approach to bypass browser security
+            console.log("Fetching latest KPIs...");
+            const oldScript = document.getElementById('jsonp-sync');
+            if (oldScript) oldScript.remove();
+
             const script = document.createElement('script');
-            script.src = `${API_URL}?callback=updateUI`;
+            script.id = 'jsonp-sync';
+            script.src = `${API_URL}?callback=updateUI&ts=${new Date().getTime()}`;
             document.body.appendChild(script);
-            document.body.removeChild(script);
         }
 
         function updateUI(data) {
+            console.log("Data Received:", data);
             const sales = parseFloat(data.totalSales) || 0;
             const ads = parseFloat(data.adBurn) || 0;
             const net = parseFloat(data.netProfit) || 0;
@@ -77,17 +82,10 @@
                 statusText.innerText = "🚀 ELITE PERFORMANCE";
                 statusText.style.color = "#00FF00";
                 rocket.innerText = "🚀";
-                rocket.style.transform = "translateY(-20px) scale(1.2)";
-            } else if (net > 0) {
+            } else {
                 statusText.innerText = "✅ SYSTEMS NOMINAL";
                 statusText.style.color = "#FFFFFF";
                 rocket.innerText = "✅";
-                rocket.style.transform = "scale(1)";
-            } else {
-                statusText.innerText = "🛑 CRITICAL: UNDERPERFORMING";
-                statusText.style.color = "#FF0000";
-                rocket.innerText = "⚠️";
-                rocket.style.transform = "rotate(15deg)";
             }
         }
 
@@ -95,7 +93,9 @@
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
         }
 
+        // Initial launch
         fetchKPIs();
+        // Periodic sync every 30s
         setInterval(fetchKPIs, 30000);
     </script>
 </body>
