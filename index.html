@@ -2,125 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Core | KPI Command Center</title>
+    <title>DEINESTY | KPI SaaS v1.5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #000;
-            color: #fff;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000000;
+            color: #FFFFFF;
+            font-family: 'Lexend', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            text-transform: uppercase;
+            padding: 50px;
         }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        h1 {
-            color: #FFD700; /* Gold */
-            letter-spacing: 3px;
-            margin-bottom: 5px;
-            font-size: 1.6rem;
-        }
-
-        .tagline {
-            color: #fff;
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-            font-weight: 300;
-        }
-
-        .version {
-            color: #444;
-            font-size: 0.6rem;
-            letter-spacing: 1px;
-        }
-
-        .metrics-container {
+        .brand { color: #FFBF00; font-size: 28px; font-weight: bold; margin-bottom: 5px; }
+        .version { color: #FFBF00; font-size: 11px; margin-bottom: 40px; letter-spacing: 1px; }
+        
+        /* THE COCKPIT SYMMETRY */
+        .cockpit {
             display: flex;
             gap: 20px;
-            margin-bottom: 25px;
+            width: 100%;
+            max-width: 1150px; /* Matches your CORE_WIDTH */
+            justify-content: center;
         }
-
         .card {
-            background: #0a0a0a;
-            border: 1px solid #222;
-            border-radius: 10px;
+            background: #111;
+            border: 1px solid #333;
             padding: 20px;
-            width: 160px;
+            flex: 1;
             text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.8);
+            border-radius: 4px;
         }
-
-        .main-status-card {
-            background: #000;
-            border: 2px solid #FFD700; /* Gold Highlight */
-            border-radius: 20px;
-            padding: 35px;
-            width: 360px;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
-        }
-
-        .label { 
-            font-size: 0.7rem; 
-            color: #888; 
-            margin-bottom: 10px; 
-            letter-spacing: 2px; 
-        }
-
-        .value { 
-            font-size: 1.8rem; 
-            font-weight: bold; 
-            color: #fff; 
-        }
-
-        .profit-green { 
-            color: #00FF00; 
-            text-shadow: 0 0 10px rgba(0,255,0,0.5); 
-        }
-
-        .emoji { 
-            font-size: 4.5rem; 
-            margin: 15px 0; 
-        }
-
-        #ads { color: #FF4444; } /* Red for Ad Burn */
+        .card.profit { border: 2px solid #00FF00; }
+        .card.target { border: 2px solid #FFBF00; background: #443a00; } /* Matches your inputBox color */
+        
+        .label { font-size: 14px; margin-bottom: 15px; display: block; }
+        .value { font-size: 32px; font-weight: bold; }
+        .amber { color: #FFBF00; }
+        .green { color: #00FF00; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>THE CORE | KPI COMMAND CENTER</h1>
-        <div class="tagline">by DEINESTY SYSTEMS</div>
-        <div class="version">// SaaS INTERFACE v1.5</div>
-    </div>
+    <div class="brand">The Core | KPI Command Center</div>
+    <div class="version">by DEINESTY Systems // SaaS v1.5</div>
 
-    <div class="metrics-container">
+    <div class="cockpit">
         <div class="card">
-            <div class="label">TOTAL SALES</div>
-            <div class="value" id="sales">$0.00</div>
+            <span class="label">TOTAL SALES</span>
+            <span class="value amber" id="sales">$0.00</span>
         </div>
         <div class="card">
-            <div class="label">AD BURN</div>
-            <div class="value" id="ads">$0.00</div>
+            <span class="label">AD BURN</span>
+            <span class="value">$0.00</span>
+        </div>
+        <div class="card profit">
+            <span class="label" style="color: #00FF00;">TRUE NET PROFIT</span>
+            <span class="value green" id="net">$0.00</span>
+        </div>
+        <div class="card target">
+            <span class="label">TARGET PROFIT</span>
+            <span class="value">$0.00</span>
         </div>
     </div>
 
-    <div class="main-status-card">
-        <div class="label">CURRENT STATUS</div>
-        <div class="emoji" id="statusEmoji">🚀</div>
-        <div class="label">TRUE NET PROFIT</div>
-        <div class="value profit-green" id="netProfit">$0.00</div>
-    </div>
+    <div style="font-size: 80px; margin-top: 40px;">🚀</div>
 
 </body>
 </html>
