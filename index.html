@@ -6,66 +6,141 @@
     <title>DEINESTY | KPI SaaS v1.5</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #000000; color: #FFFFFF; font-family: 'Lexend', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; margin: 0; min-height: 100vh; }
-        .header-container { text-align: center; margin-top: 30px; margin-bottom: 40px; }
-        .brand { color: #FFBF00; font-size: clamp(24px, 5vw, 32px); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-        .cockpit { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; width: 100%; max-width: 1100px; }
-        .card { background: #111; border: 1px solid #333; padding: 25px; text-align: center; border-radius: 8px; }
-        .card.profit { border: 2px solid #00FF00; box-shadow: 0 0 15px rgba(0,255,0,0.1); }
+        body {
+            background-color: #000000;
+            color: #FFFFFF;
+            font-family: 'Lexend', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+        
+        /* PREMIUM BRANDING BLOCK */
+        .header-container { text-align: center; margin-top: 50px; margin-bottom: 60px; }
+        .brand { 
+            color: #FFBF00; 
+            font-size: clamp(32px, 7vw, 48px); 
+            font-weight: bold; 
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+        .sub-brand { 
+            color: #FFFFFF; 
+            font-size: 22px; 
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        /* KPI GRID */
+        .cockpit {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1150px; 
+        }
+        .card {
+            background: #111111;
+            border: 1px solid #333333;
+            padding: 35px;
+            text-align: center;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        .card.profit { border: 2px solid #00FF00; box-shadow: 0 0 20px rgba(0,255,0,0.05); }
         .card.target { border: 2px solid #FFBF00; background: #1a1700; } 
-        .label { font-size: 12px; margin-bottom: 15px; display: block; font-weight: bold; color: #888; }
-        .value { font-size: 32px; font-weight: bold; }
+        
+        .label { font-size: 14px; margin-bottom: 18px; display: block; font-weight: bold; color: #888; letter-spacing: 1.5px; }
+        .value { font-size: 40px; font-weight: bold; display: block; }
         .amber { color: #FFBF00; }
         .green { color: #00FF00; }
-        .status-container { margin-top: 60px; text-align: center; }
-        #rocket { font-size: 80px; margin-bottom: 20px; display: inline-block; }
-        #status-text { font-weight: bold; color: #FFBF00; letter-spacing: 2px; font-size: 20px; }
-        .sync-btn { margin-top: 20px; background: none; border: 1px solid #444; color: #444; cursor: pointer; padding: 8px 15px; border-radius: 4px; font-family: 'Lexend'; transition: 0.3s; }
-        .sync-btn:hover { border-color: #FFBF00; color: #FFBF00; }
+
+        /* TELEMETRY STATUS */
+        .status-container { margin-top: 70px; text-align: center; }
+        #rocket { font-size: 90px; margin-bottom: 25px; transition: 0.5s ease; display: inline-block; }
+        #status-text { font-weight: bold; color: #FFBF00; letter-spacing: 3px; font-size: 20px; text-transform: uppercase; }
+        
+        button {
+            margin-top: 25px;
+            background: transparent;
+            border: 1px solid #444;
+            color: #666;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-family: 'Lexend';
+            text-transform: uppercase;
+            font-size: 11px;
+            border-radius: 4px;
+            letter-spacing: 1px;
+        }
+        button:hover { border-color: #FFBF00; color: #FFBF00; background: rgba(255, 191, 0, 0.05); }
     </style>
 </head>
 <body>
 
     <div class="header-container">
         <div class="brand">The Core | KPI Command Center</div>
-        <div style="font-size:12px; color:#555; margin-top:5px; letter-spacing:2px;">DEINESTY SYSTEMS // PREMIUM SaaS</div>
+        <div class="sub-brand">by DEINESTY Systems | Premium SaaS v1.5</div>
     </div>
 
     <div class="cockpit">
-        <div class="card"><span class="label">TOTAL SALES</span><span id="sales-val" class="value amber">$0.00</span></div>
-        <div class="card"><span class="label">AD BURN</span><span id="ads-val" class="value">$0.00</span></div>
-        <div class="card profit"><span class="label" style="color:#00FF00;">TRUE NET PROFIT</span><span id="profit-val" class="value green">$0.00</span></div>
-        <div class="card target"><span class="label">TARGET PROFIT</span><span id="target-val" class="value">$0.00</span></div>
+        <div class="card">
+            <span class="label">TOTAL SALES</span>
+            <span id="sales-val" class="value amber">$0.00</span>
+        </div>
+        <div class="card">
+            <span class="label">AD BURN</span>
+            <span id="ads-val" class="value">$0.00</span>
+        </div>
+        <div class="card profit">
+            <span class="label" style="color: #00FF00;">TRUE NET PROFIT</span>
+            <span id="profit-val" class="value green">$0.00</span>
+        </div>
+        <div class="card target">
+            <span class="label">TARGET PROFIT</span>
+            <span id="target-val" class="value">$0.00</span>
+        </div>
     </div>
 
     <div class="status-container">
         <div id="rocket">📡</div>
         <div id="status-text">INITIALIZING SYNC...</div>
         <br>
-        <button class="sync-btn" onclick="fetchKPIs()">FORCE RE-SYNC</button>
+        <button onclick="fetchKPIs()">Force System Re-Sync</button>
     </div>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbwmw09Fk6GHJNm3QttrKJ_6tX1jkF3UMPr9Nr_Ac7TdeXqJCIboGnR9MhxQxujxW8rLFA/exec";
+        // CORE API BRIDGE
+        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwmw09Fk6GHJNm3QttrKJ_6tX1jkF3UMPr9Nr_Ac7TdeXqJCIboGnR9MhxQxujxW8rLFA/exec";
 
-        function fetchKPIs() {
-            console.log("Fetching latest KPIs...");
-            const oldScript = document.getElementById('jsonp-sync');
-            if (oldScript) oldScript.remove();
-
-            const script = document.createElement('script');
-            script.id = 'jsonp-sync';
-            script.src = `${API_URL}?callback=updateUI&ts=${new Date().getTime()}`;
-            document.body.appendChild(script);
+        async function fetchKPIs() {
+            const statusText = document.getElementById('status-text');
+            statusText.innerText = "SYNCING LIVE DATA...";
+            
+            try {
+                const response = await fetch(SHEET_API_URL);
+                const data = await response.json();
+                console.log("Telemetry Received:", data);
+                updateUI(data);
+            } catch (error) {
+                console.error("Connection Error:", error);
+                statusText.innerText = "OFFLINE: CHECK INTERACTIVE DEPLOYMENT";
+                statusText.style.color = "#FF0000";
+            }
         }
 
         function updateUI(data) {
-            console.log("Data Received:", data);
             const sales = parseFloat(data.totalSales) || 0;
             const ads = parseFloat(data.adBurn) || 0;
             const net = parseFloat(data.netProfit) || 0;
             const target = parseFloat(data.targetProfit) || 0;
-            const margin = sales > 0 ? (net / sales) * 100 : 0;
+            const margin = sales > 0 ? (net / sales) : 0;
 
             document.getElementById('sales-val').innerText = formatCurrency(sales);
             document.getElementById('ads-val').innerText = formatCurrency(ads);
@@ -75,17 +150,20 @@
             const statusText = document.getElementById('status-text');
             const rocket = document.getElementById('rocket');
 
-            if (sales === 0) {
-                statusText.innerText = "WAITING FOR DATA";
-                rocket.innerText = "📡";
-            } else if (margin >= 30) {
-                statusText.innerText = "🚀 ELITE PERFORMANCE";
-                statusText.style.color = "#00FF00";
-                rocket.innerText = "🚀";
+            if (sales > 0 || net !== 0) {
+                if (margin >= 0.30) {
+                    statusText.innerText = "🚀 ELITE PERFORMANCE";
+                    statusText.style.color = "#00FF00";
+                    rocket.innerText = "🚀";
+                } else {
+                    statusText.innerText = "✅ SYSTEMS NOMINAL";
+                    statusText.style.color = "#FFFFFF";
+                    rocket.innerText = "✅";
+                }
             } else {
-                statusText.innerText = "✅ SYSTEMS NOMINAL";
-                statusText.style.color = "#FFFFFF";
-                rocket.innerText = "✅";
+                statusText.innerText = "WAITING FOR CORE DATA...";
+                statusText.style.color = "#FFBF00";
+                rocket.innerText = "📡";
             }
         }
 
@@ -93,10 +171,9 @@
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
         }
 
-        // Initial launch
+        // AUTO-INIT & POLLING
         fetchKPIs();
-        // Periodic sync every 30s
-        setInterval(fetchKPIs, 30000);
+        setInterval(fetchKPIs, 30000); 
     </script>
 </body>
 </html>
