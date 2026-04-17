@@ -6,85 +6,22 @@
     <title>DEINESTY | KPI SaaS v1.5</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #000000;
-            color: #FFFFFF;
-            font-family: 'Lexend', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            margin: 0;
-            min-height: 100vh;
-        }
-        
-        /* HEADER STYLING */
+        body { background-color: #000000; color: #FFFFFF; font-family: 'Lexend', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; margin: 0; min-height: 100vh; }
         .header-container { text-align: center; margin-top: 30px; margin-bottom: 40px; }
-        .brand { 
-            color: #FFBF00; 
-            font-size: clamp(24px, 5vw, 32px); 
-            font-weight: bold; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .company-name { 
-            color: #FFFFFF; 
-            font-size: 18px; 
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
-        .version-tag {
-            color: #FFBF00;
-            font-size: 12px; 
-            margin-top: 10px;
-            letter-spacing: 1px;
-        }
-
-        /* THE COCKPIT SYMMETRY (4 CARDS) */
-        .cockpit {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-            width: 100%;
-            max-width: 1100px; 
-        }
-        .card {
-            background: #111;
-            border: 1px solid #333;
-            padding: 25px;
-            text-align: center;
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-        }
-        .card:hover { transform: translateY(-5px); }
+        .brand { color: #FFBF00; font-size: clamp(24px, 5vw, 32px); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .company-name { color: #FFFFFF; font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; }
+        .version-tag { color: #FFBF00; font-size: 12px; margin-top: 10px; letter-spacing: 1px; }
+        .cockpit { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; width: 100%; max-width: 1100px; }
+        .card { background: #111; border: 1px solid #333; padding: 25px; text-align: center; border-radius: 8px; transition: transform 0.3s ease; }
         .card.profit { border: 2px solid #00FF00; box-shadow: 0 0 15px rgba(0,255,0,0.1); }
         .card.target { border: 2px solid #FFBF00; background: #1a1700; } 
-        
         .label { font-size: 12px; margin-bottom: 15px; display: block; font-weight: bold; letter-spacing: 1px; color: #888; }
         .value { font-size: 32px; font-weight: bold; display: block; }
         .amber { color: #FFBF00; }
         .green { color: #00FF00; }
-
-        /* STATUS DISPLAY */
-        .status-container {
-            margin-top: 60px;
-            text-align: center;
-        }
-        #rocket { 
-            font-size: 80px; 
-            margin-bottom: 20px;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: inline-block;
-        }
-        #status-text { 
-            font-weight: bold; 
-            color: #555; 
-            letter-spacing: 2px;
-            font-size: 20px;
-            text-transform: uppercase;
-        }
+        .status-container { margin-top: 60px; text-align: center; }
+        #rocket { font-size: 80px; margin-bottom: 20px; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-block; }
+        #status-text { font-weight: bold; color: #555; letter-spacing: 2px; font-size: 20px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -95,51 +32,27 @@
         <div class="version-tag">PREMIUM SaaS INTERFACE V1.5</div>
     </div>
 
-    <div class="cockpit" id="dashboard">
-        <div class="card">
-            <span class="label">TOTAL SALES</span>
-            <span id="sales-val" class="value amber">$0.00</span>
-        </div>
-        <div class="card">
-            <span class="label">AD BURN</span>
-            <span id="ads-val" class="value">$0.00</span>
-        </div>
-        <div class="card profit">
-            <span class="label" style="color: #00FF00;">TRUE NET PROFIT</span>
-            <span id="profit-val" class="value green">$0.00</span>
-        </div>
-        <div class="card target">
-            <span class="label">TARGET PROFIT</span>
-            <span id="target-val" class="value">$0.00</span>
-        </div>
+    <div class="cockpit">
+        <div class="card"><span class="label">TOTAL SALES</span><span id="sales-val" class="value amber">$0.00</span></div>
+        <div class="card"><span class="label">AD BURN</span><span id="ads-val" class="value">$0.00</span></div>
+        <div class="card profit"><span class="label" style="color: #00FF00;">TRUE NET PROFIT</span><span id="profit-val" class="value green">$0.00</span></div>
+        <div class="card target"><span class="label">TARGET PROFIT</span><span id="target-val" class="value">$0.00</span></div>
     </div>
 
     <div class="status-container">
         <div id="rocket">📡</div>
-        <div id="status-text">CONNECTING TO INTERACTIVE ENGINE...</div>
+        <div id="status-text">SYNCING DATA...</div>
     </div>
 
     <script>
-        // 1. YOUR API URL
-        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwmw09Fk6GHJNm3QttrKJ_6tX1jkF3UMPr9Nr_Ac7TdeXqJCIboGnR9MhxQxujxW8rLFA/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbwmw09Fk6GHJNm3QttrKJ_6tX1jkF3UMPr9Nr_Ac7TdeXqJCIboGnR9MhxQxujxW8rLFA/exec";
 
-        async function fetchKPIs() {
-            console.log("Syncing with Interactive Engine...");
-            try {
-                // Using 'fetch' with no mode restrictions to allow Google's redirect
-                const response = await fetch(SHEET_API_URL);
-                
-                if (!response.ok) throw new Error('API Response Error');
-                
-                const data = await response.json();
-                console.log("Data Received:", data);
-                updateUI(data);
-                
-            } catch (error) {
-                console.error("Connection Error:", error);
-                document.getElementById('status-text').innerText = "OFFLINE: CHECK API DEPLOYMENT";
-                document.getElementById('status-text').style.color = "#FF0000";
-            }
+        function fetchKPIs() {
+            // High-end JSONP approach to bypass browser security
+            const script = document.createElement('script');
+            script.src = `${API_URL}?callback=updateUI`;
+            document.body.appendChild(script);
+            document.body.removeChild(script);
         }
 
         function updateUI(data) {
@@ -147,8 +60,6 @@
             const ads = parseFloat(data.adBurn) || 0;
             const net = parseFloat(data.netProfit) || 0;
             const target = parseFloat(data.targetProfit) || 0;
-            
-            // Rocket Logic (30% Elite Margin)
             const margin = sales > 0 ? (net / sales) * 100 : 0;
 
             document.getElementById('sales-val').innerText = formatCurrency(sales);
@@ -161,7 +72,6 @@
 
             if (sales === 0) {
                 statusText.innerText = "WAITING FOR DATA";
-                statusText.style.color = "#555";
                 rocket.innerText = "📡";
             } else if (margin >= 30) {
                 statusText.innerText = "🚀 ELITE PERFORMANCE";
@@ -182,13 +92,9 @@
         }
 
         function formatCurrency(num) {
-            return new Intl.NumberFormat('en-US', { 
-                style: 'currency', 
-                currency: 'USD' 
-            }).format(num);
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
         }
 
-        // Initial fetch and auto-refresh every 30 seconds
         fetchKPIs();
         setInterval(fetchKPIs, 30000);
     </script>
