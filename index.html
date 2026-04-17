@@ -1,53 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>DEINESTY | KPI SaaS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE CORE | SaaS Dashboard</title>
     <style>
         body {
-            background-color: #000000;
-            color: #FFFFFF;
-            font-family: 'Lexend', sans-serif;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 50px;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            text-transform: uppercase;
         }
-        .dashboard-card {
-            border: 2px solid #FFBF00;
-            padding: 30px;
-            border-radius: 15px;
+
+        .header {
             text-align: center;
-            width: 350px;
-            background: #111;
+            margin-bottom: 30px;
         }
-        h1 { color: #FFBF00; margin-bottom: 5px; }
-        .net-profit { color: #00FF00; font-size: 48px; font-weight: bold; margin: 20px 0; }
-        .status-emoji { font-size: 60px; }
-        .label { color: #AAA; text-transform: uppercase; font-size: 12px; letter-spacing: 2px; }
+
+        h1 {
+            color: #FFD700; /* Gold */
+            letter-spacing: 4px;
+            margin-bottom: 5px;
+        }
+
+        .version {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .metrics-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: #111;
+            border: 2px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            width: 180px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .main-status-card {
+            background: #000;
+            border: 3px solid #FFD700; /* Gold Border */
+            border-radius: 20px;
+            padding: 40px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .label { font-size: 0.7rem; color: #888; margin-bottom: 10px; letter-spacing: 2px; }
+        .value { font-size: 1.8rem; font-weight: bold; color: #fff; }
+        .profit-green { color: #00FF00; text-shadow: 0 0 10px rgba(0,255,0,0.5); }
+        .emoji { font-size: 4rem; margin: 15px 0; }
     </style>
 </head>
 <body>
 
-    <h1>THE CORE</h1>
-    <p style="color: #FFBF00; margin-bottom: 40px;">SaaS Command Center v1.5</p>
-
-    <div class="dashboard-card">
-        <div class="label">Current Status</div>
-        <div id="emojiDisplay" class="status-emoji">--</div>
-        <div class="label">True Net Profit</div>
-        <div id="profitDisplay" class="net-profit">$0.00</div>
+    <div class="header">
+        <h1>THE CORE</h1>
+        <div class="version">SaaS Command Center v1.5</div>
     </div>
 
-    <script src="engine.js"></script>
-    <script>
-        // Fake data for the preview
-        const mockNet = 500;
-        const mockGross = 1000;
+    <div class="metrics-container">
+        <div class="card">
+            <div class="label">Total Sales</div>
+            <div class="value" id="sales">$0.00</div>
+        </div>
+        <div class="card">
+            <div class="label">Ad Burn</div>
+            <div class="value" style="color: #ff4444;" id="ads">$0.00</div>
+        </div>
+    </div>
 
-        // Using the SAME logic from engine.js for the Website
-        document.getElementById('profitDisplay').innerText = "$" + mockNet.toLocaleString();
-        document.getElementById('emojiDisplay').innerText = BUSINESS_RULES.getStatus(mockNet, mockGross);
-    </script>
+    <div class="main-status-card">
+        <div class="label">Current Status</div>
+        <div class="emoji" id="statusEmoji">🚀</div>
+        <div class="label">True Net Profit</div>
+        <div class="value profit-green" id="netProfit">$500.00</div>
+    </div>
+
 </body>
 </html>
