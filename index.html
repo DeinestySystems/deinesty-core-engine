@@ -26,7 +26,7 @@
         }
         .company-name { 
             color: #FFFFFF; 
-            font-size: 18px; /* Bigger sub-header */
+            font-size: 18px; 
             font-weight: 700;
             margin-bottom: 5px; 
             letter-spacing: 2px;
@@ -34,7 +34,7 @@
         }
         .version-tag {
             color: #FFBF00;
-            font-size: 14px; /* Bigger version text */
+            font-size: 14px; 
             margin-bottom: 40px;
             letter-spacing: 1px;
         }
@@ -44,24 +44,27 @@
             display: flex;
             gap: 20px;
             width: 100%;
-            max-width: 1150px; 
+            max-width: 1200px; 
             justify-content: center;
+            flex-wrap: wrap;
         }
         .card {
             background: #111;
             border: 1px solid #333;
             padding: 20px;
             flex: 1;
+            min-width: 180px;
             text-align: center;
             border-radius: 4px;
         }
-        .card.profit { border: 2px solid #00FF00; }
+        .card.profit { border: 2px solid #00FF00; box-shadow: 0 0 10px rgba(0,255,0,0.1); }
         .card.target { border: 2px solid #FFBF00; background: #443a00; } 
         
         .label { font-size: 14px; margin-bottom: 15px; display: block; font-weight: bold; }
         .value { font-size: 32px; font-weight: bold; }
         .amber { color: #FFBF00; }
         .green { color: #00FF00; }
+        .gray { color: #A0A0A0; }
     </style>
 </head>
 <body>
@@ -73,23 +76,28 @@
     <div class="cockpit">
         <div class="card">
             <span class="label">TOTAL SALES</span>
-            <span class="value amber" id="sales">$0.00</span>
+            <span id="sales-val" class="value amber">$0.00</span>
         </div>
         <div class="card">
             <span class="label">AD BURN</span>
-            <span class="value">$0.00</span>
+            <span id="ads-val" class="value">$0.00</span>
         </div>
         <div class="card profit">
             <span class="label" style="color: #00FF00;">TRUE NET PROFIT</span>
-            <span class="value green" id="net">$0.00</span>
+            <span id="profit-val" class="value green">$0.00</span>
         </div>
         <div class="card target">
             <span class="label">TARGET PROFIT</span>
-            <span class="value">$0.00</span>
+            <span id="target-val" class="value">$0.00</span>
+        </div>
+        <div class="card">
+            <span class="label gray">MARGIN %</span>
+            <span id="margin-val" class="value gray">0%</span>
         </div>
     </div>
 
-    <div style="font-size: 80px; margin-top: 40px;">🚀</div>
+    <div id="rocket" style="font-size: 80px; margin-top: 40px; transition: 0.3s;">🚀</div>
+    <div id="status-text" style="margin-top: 10px; font-weight: bold; color: #555;">SYSTEMS NOMINAL</div>
 
 </body>
 </html>
