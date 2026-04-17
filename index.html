@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DEINESTY | KPI SaaS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000000;
+            color: #FFFFFF;
+            font-family: 'Lexend', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px;
+        }
+        .dashboard-card {
+            border: 2px solid #FFBF00;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            width: 350px;
+            background: #111;
+        }
+        h1 { color: #FFBF00; margin-bottom: 5px; }
+        .net-profit { color: #00FF00; font-size: 48px; font-weight: bold; margin: 20px 0; }
+        .status-emoji { font-size: 60px; }
+        .label { color: #AAA; text-transform: uppercase; font-size: 12px; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+    <h1>THE CORE</h1>
+    <p style="color: #FFBF00; margin-bottom: 40px;">SaaS Command Center v1.5</p>
+
+    <div class="dashboard-card">
+        <div class="label">Current Status</div>
+        <div id="emojiDisplay" class="status-emoji">--</div>
+        <div class="label">True Net Profit</div>
+        <div id="profitDisplay" class="net-profit">$0.00</div>
+    </div>
+
+    <script src="engine.js"></script>
+    <script>
+        // Fake data for the preview
+        const mockNet = 500;
+        const mockGross = 1000;
+
+        // Using the SAME logic from engine.js for the Website
+        document.getElementById('profitDisplay').innerText = "$" + mockNet.toLocaleString();
+        document.getElementById('emojiDisplay').innerText = BUSINESS_RULES.getStatus(mockNet, mockGross);
+    </script>
+</body>
+</html>
