@@ -3,89 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEINESTY | Premium SaaS v1.5</title>
+    <title>DEINESTY | Premium SaaS v1.6</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #000000;
-            color: #FFFFFF;
-            font-family: 'Lexend', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            margin: 0;
-            min-height: 100vh;
-        }
-        
-        /* UPDATED BRANDING SECTION */
+        body { background-color: #000; color: #fff; font-family: 'Lexend', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; margin: 0; min-height: 100vh; }
         .header-container { text-align: center; margin-top: 50px; margin-bottom: 60px; }
-        .brand { 
-            color: #FFBF00; 
-            font-size: clamp(32px, 7vw, 48px); 
-            font-weight: bold; 
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 5px;
-        }
-        .sub-brand { 
-            color: #FFFFFF; 
-            font-size: 22px; 
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            opacity: 0.9;
-        }
+        .brand { color: #FFBF00; font-size: clamp(32px, 7vw, 48px); font-weight: bold; text-transform: uppercase; letter-spacing: 3px; }
+        .sub-brand { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.9; margin-top: 10px; }
 
-        /* DASHBOARD GRID */
-        .cockpit {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
-            width: 100%;
-            max-width: 1200px; 
-        }
-        .card {
-            background: #0a0a0a;
-            border: 1px solid #333;
-            padding: 35px;
-            text-align: center;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-        .card.profit { border: 2px solid #00FF00; box-shadow: 0 0 20px rgba(0,255,0,0.05); }
-        .card.target { border: 2px solid #FFBF00; background: #121000; } 
+        .cockpit { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; width: 100%; max-width: 1200px; }
+        .card { background: #0a0a0a; border: 1px solid #333; padding: 35px; text-align: center; border-radius: 12px; }
+        .card.profit { border: 2px solid #00FF00; }
+        .card.target { border: 2px solid #FFBF00; background: #121000; }
         
         .label { font-size: 14px; margin-bottom: 20px; display: block; font-weight: bold; color: #777; letter-spacing: 2px; }
         .value { font-size: 40px; font-weight: bold; display: block; }
         .amber { color: #FFBF00; }
         .green { color: #00FF00; }
 
-        /* STATUS ENGINE */
         .status-container { margin-top: 70px; text-align: center; }
         #rocket { font-size: 90px; margin-bottom: 25px; display: inline-block; transition: 0.5s; }
         #status-text { font-weight: bold; color: #FFBF00; letter-spacing: 3px; font-size: 20px; text-transform: uppercase; }
-        
-        .btn-sync {
-            margin-top: 30px;
-            background: transparent;
-            border: 1px solid #444;
-            color: #666;
-            padding: 12px 24px;
-            cursor: pointer;
-            font-family: 'Lexend';
-            text-transform: uppercase;
-            font-size: 11px;
-            border-radius: 4px;
-        }
-        .btn-sync:hover { border-color: #FFBF00; color: #FFBF00; }
     </style>
 </head>
 <body>
 
     <div class="header-container">
         <div class="brand">The Core | KPI Command Center</div>
-        <div class="sub-brand">by DEINESTY Systems | Premium SaaS v1.5</div>
+        <div class="sub-brand">by DEINESTY Systems | Premium SaaS v1.6</div>
     </div>
 
     <div class="cockpit">
@@ -109,20 +54,56 @@
 
     <div class="status-container">
         <div id="rocket">📡</div>
-        <div id="status-text">INITIALIZING SYNC...</div>
-        <br>
-        <button class="btn-sync" onclick="fetchKPIs()">Manual Re-Sync</button>
+        <div id="status-text">CONNECTING TO CORE...</div>
     </div>
 
     <script>
-        // 1. PLACE YOUR NEW WEB APP URL HERE
-        const SHEET_API_URL = "YOUR_NEW_WEB_APP_URL_HERE";
+        // REPLACE WITH YOUR NEW WEB APP URL
+        const SHEET_API_URL = "YOUR_NEW_DEPLOYMENT_URL_HERE";
 
         function fetchKPIs() {
-            document.getElementById('status-text').innerText = "FETCHING CORE DATA...";
-            
-            // JSONP Technique: Injects a script tag to bypass CORS
             const oldScript = document.getElementById('jsonp-sync');
             if (oldScript) oldScript.remove();
-
             const script = document.createElement('script');
+            script.id = 'jsonp-sync';
+            script.src = `${SHEET_API_URL}?callback=updateUI&t=${new Date().getTime()}`;
+            document.body.appendChild(script);
+        }
+
+        function updateUI(data) {
+            document.getElementById('sales-val').innerText = formatCurrency(data.totalSales);
+            document.getElementById('ads-val').innerText = formatCurrency(data.adBurn);
+            document.getElementById('profit-val').innerText = formatCurrency(data.netProfit);
+            document.getElementById('target-val').innerText = formatCurrency(data.targetProfit);
+
+            const statusText = document.getElementById('status-text');
+            const rocket = document.getElementById('rocket');
+            const sales = parseFloat(data.totalSales) || 0;
+            const net = parseFloat(data.netProfit) || 0;
+            const margin = sales > 0 ? (net / sales) : 0;
+
+            if (sales > 0) {
+                if (margin >= 0.30) {
+                    statusText.innerText = "🚀 ELITE PERFORMANCE";
+                    statusText.style.color = "#00FF00";
+                    rocket.innerText = "🚀";
+                } else {
+                    statusText.innerText = "✅ SYSTEMS NOMINAL";
+                    statusText.style.color = "#FFFFFF";
+                    rocket.innerText = "✅";
+                }
+            } else {
+                statusText.innerText = "STANDBY: WAITING FOR DATA";
+                rocket.innerText = "📡";
+            }
+        }
+
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num || 0);
+        }
+
+        fetchKPIs();
+        setInterval(fetchKPIs, 30000);
+    </script>
+</body>
+</html>
