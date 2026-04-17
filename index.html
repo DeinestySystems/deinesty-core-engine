@@ -18,6 +18,7 @@
             min-height: 100vh;
         }
         
+        /* HEADER STYLING */
         .header-container { text-align: center; margin-top: 30px; margin-bottom: 40px; }
         .brand { 
             color: #FFBF00; 
@@ -41,6 +42,7 @@
             letter-spacing: 1px;
         }
 
+        /* THE COCKPIT SYMMETRY (4 CARDS) */
         .cockpit {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -65,6 +67,7 @@
         .amber { color: #FFBF00; }
         .green { color: #00FF00; }
 
+        /* STATUS DISPLAY */
         .status-container {
             margin-top: 60px;
             text-align: center;
@@ -117,18 +120,13 @@
     </div>
 
     <script>
-        // 1. YOUR API URL (CONNECTED TO YOUR SHEET)
-        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzUI1YIKP4XYcPgw6gbf3_3IlracP84wBPquW4mlOVoE-8yX7hIXVZeSGu0pkwxQmCGRA/exec";
+        // LIVE WEB APP URL
+        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwmw09Fk6GHJNm3QttrKJ_6tX1jkF3UMPr9Nr_Ac7TdeXqJCIboGnR9MhxQxujxW8rLFA/exec";
 
         async function fetchKPIs() {
             try {
-                const response = await fetch(SHEET_API_URL, {
-                    method: 'GET',
-                    redirect: 'follow'
-                });
-                
-                if (!response.ok) throw new Error('Network response was not ok');
-                
+                const response = await fetch(SHEET_API_URL);
+                if (!response.ok) throw new Error('API Response Error');
                 const data = await response.json();
                 updateUI(data);
             } catch (error) {
@@ -179,10 +177,8 @@
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
         }
 
-        // Run immediately
+        // Run on load and every 30 seconds
         fetchKPIs();
-        
-        // Auto-refresh every 30 seconds
         setInterval(fetchKPIs, 30000);
     </script>
 </body>
