@@ -14,15 +14,36 @@
             align-items: center;
             padding: 50px;
         }
-        .brand { color: #FFBF00; font-size: 28px; font-weight: bold; margin-bottom: 5px; }
-        .version { color: #FFBF00; font-size: 11px; margin-bottom: 40px; letter-spacing: 1px; }
+        
+        /* HEADER STYLING */
+        .brand { 
+            color: #FFBF00; 
+            font-size: 32px; /* Increased size */
+            font-weight: bold; 
+            margin-bottom: 8px; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .version { 
+            color: #FFFFFF; /* Changed to White for better hierarchy */
+            font-size: 16px; /* Significantly bigger as requested */
+            font-weight: 400;
+            margin-bottom: 5px; 
+            letter-spacing: 2px;
+        }
+        .build-tag {
+            color: #FFBF00;
+            font-size: 12px;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
         
         /* THE COCKPIT SYMMETRY */
         .cockpit {
             display: flex;
             gap: 20px;
             width: 100%;
-            max-width: 1150px; /* Matches your CORE_WIDTH */
+            max-width: 1150px; 
             justify-content: center;
         }
         .card {
@@ -34,9 +55,9 @@
             border-radius: 4px;
         }
         .card.profit { border: 2px solid #00FF00; }
-        .card.target { border: 2px solid #FFBF00; background: #443a00; } /* Matches your inputBox color */
+        .card.target { border: 2px solid #FFBF00; background: #443a00; } 
         
-        .label { font-size: 14px; margin-bottom: 15px; display: block; }
+        .label { font-size: 14px; margin-bottom: 15px; display: block; font-weight: bold; }
         .value { font-size: 32px; font-weight: bold; }
         .amber { color: #FFBF00; }
         .green { color: #00FF00; }
@@ -45,7 +66,8 @@
 <body>
 
     <div class="brand">The Core | KPI Command Center</div>
-    <div class="version">by DEINESTY Systems // SaaS v1.5</div>
+    <div class="version">BY DEINESTY SYSTEMS</div>
+    <div class="build-tag">SAAS INTERFACE V1.5</div>
 
     <div class="cockpit">
         <div class="card">
