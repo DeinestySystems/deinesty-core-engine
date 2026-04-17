@@ -116,22 +116,28 @@
 
     <div class="status-container">
         <div id="rocket">📡</div>
-        <div id="status-text">CONNECTING TO INTERACTIVE...</div>
+        <div id="status-text">CONNECTING TO INTERACTIVE ENGINE...</div>
     </div>
 
     <script>
-        // LIVE WEB APP URL
+        // 1. YOUR API URL
         const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwmw09Fk6GHJNm3QttrKJ_6tX1jkF3UMPr9Nr_Ac7TdeXqJCIboGnR9MhxQxujxW8rLFA/exec";
 
         async function fetchKPIs() {
+            console.log("Syncing with Interactive Engine...");
             try {
+                // Using 'fetch' with no mode restrictions to allow Google's redirect
                 const response = await fetch(SHEET_API_URL);
+                
                 if (!response.ok) throw new Error('API Response Error');
+                
                 const data = await response.json();
+                console.log("Data Received:", data);
                 updateUI(data);
+                
             } catch (error) {
-                console.error("Sync Error:", error);
-                document.getElementById('status-text').innerText = "OFFLINE: CHECK API";
+                console.error("Connection Error:", error);
+                document.getElementById('status-text').innerText = "OFFLINE: CHECK API DEPLOYMENT";
                 document.getElementById('status-text').style.color = "#FF0000";
             }
         }
@@ -141,6 +147,8 @@
             const ads = parseFloat(data.adBurn) || 0;
             const net = parseFloat(data.netProfit) || 0;
             const target = parseFloat(data.targetProfit) || 0;
+            
+            // Rocket Logic (30% Elite Margin)
             const margin = sales > 0 ? (net / sales) * 100 : 0;
 
             document.getElementById('sales-val').innerText = formatCurrency(sales);
@@ -151,7 +159,7 @@
             const statusText = document.getElementById('status-text');
             const rocket = document.getElementById('rocket');
 
-            if (sales === 0 && net === 0) {
+            if (sales === 0) {
                 statusText.innerText = "WAITING FOR DATA";
                 statusText.style.color = "#555";
                 rocket.innerText = "📡";
@@ -174,10 +182,13 @@
         }
 
         function formatCurrency(num) {
-            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
+            return new Intl.NumberFormat('en-US', { 
+                style: 'currency', 
+                currency: 'USD' 
+            }).format(num);
         }
 
-        // Run on load and every 30 seconds
+        // Initial fetch and auto-refresh every 30 seconds
         fetchKPIs();
         setInterval(fetchKPIs, 30000);
     </script>
